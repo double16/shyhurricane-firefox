@@ -1,0 +1,14 @@
+{
+  "name": "shyhurricane",
+  "version": "1.0.0",
+  "description": "Firefox WebExtension that forwards HTTP traffic to an MCP server.",
+  "private": true,
+  "scripts": {
+    "run": "web-ext run --source-dir .",
+    "lint": "web-ext lint",
+    "build": "web-ext build --overwrite-dest --filename shyhurricane.xpi --ignore-files 'package*.json' 'node_modules/**'"
+  },
+  "devDependencies": {
+    "web-ext": "^8.9.0"
+  }
+}

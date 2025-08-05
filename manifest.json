@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "ShyHurricane",
+  "version": "1.0.0",
+  "description": "Forward HTTP traffic to the ShyHurricane MCP server for indexing.",
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "webRequestFilterResponse",
+    "<all_urls>",
+    "storage",
+    "http://localhost:8000/"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "shyhurricane-firefox@double16.github.io",
+      "strict_min_version": "68.0"
+    }
+  }
+}
