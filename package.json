@@ -6,7 +6,7 @@
   "scripts": {
     "run": "web-ext run --source-dir .",
     "lint": "web-ext lint",
-    "build": "web-ext build --overwrite-dest --filename shyhurricane.xpi --ignore-files 'package*.json' 'node_modules/**'"
+    "build": "web-ext build --overwrite-dest --filename shyhurricane-$npm_package_version.xpi --ignore-files 'package*.json' 'node_modules/**'"
   },
   "devDependencies": {
     "web-ext": "^8.9.0"
