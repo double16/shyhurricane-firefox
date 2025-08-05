@@ -12,8 +12,7 @@
     "webRequestBlocking",
     "webRequestFilterResponse",
     "<all_urls>",
-    "storage",
-    "http://localhost:8000/"
+    "storage"
   ],
   "background": {
     "scripts": [
