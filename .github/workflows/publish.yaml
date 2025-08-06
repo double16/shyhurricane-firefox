@@ -2,6 +2,9 @@ name: Build & Publish Firefox Add-On
 
 on:
   push:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
     branches: [ main ]
   pull_request:
     branches: [ main ]
@@ -61,7 +64,6 @@ jobs:
       - name: Extract version from tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      # Optional: keep manifest.json version in sync with the tag
       - name: Bump manifest.json version
         run: |
           node - <<'NODE'

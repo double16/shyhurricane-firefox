@@ -1,18 +1,20 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "ShyHurricane",
   "version": "1.0.0",
   "description": "Forward HTTP traffic to the ShyHurricane MCP server for indexing.",
   "options_ui": {
-    "page": "options.html",
-    "browser_style": true
+    "page": "options.html"
   },
   "permissions": [
     "webRequest",
     "webRequestBlocking",
     "webRequestFilterResponse",
-    "<all_urls>",
     "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "localhost"
   ],
   "background": {
     "scripts": [

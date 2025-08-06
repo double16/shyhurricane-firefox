@@ -22,3 +22,5 @@ form.addEventListener("submit", evt => {
         setTimeout(() => statusLbl.textContent = "", 1500);
     });
 });
+
+if (typeof module !== 'undefined') module.exports = { saveForm, loadOptions };

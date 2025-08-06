@@ -57,7 +57,7 @@ function shouldSkip(ct) {
 function toKatanaHeaders(arr) {
     const out = {};
     for (const h of arr) {
-        const k = h.name.toLowerCase().replace(/-/g, "_");
+        const k = h.name.toLowerCase();
         out[k] = out[k] ? `${out[k]};${h.value}` : h.value;
     }
     return out;
@@ -162,3 +162,11 @@ browser.webRequest.onHeadersReceived.addListener(
     filter,
     ["blocking", "responseHeaders"]
 );
+
+if (typeof module !== 'undefined')
+  module.exports = {
+        shouldSkip,
+        urlInScope,
+        toKatanaHeaders,
+        _setDomains: d => (DOMAINS_IN_SCOPE = d)
+      };

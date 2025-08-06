@@ -6,9 +6,18 @@
   "scripts": {
     "run": "web-ext run --source-dir .",
     "lint": "web-ext lint",
-    "build": "web-ext build --overwrite-dest --filename shyhurricane-$npm_package_version.xpi --ignore-files 'package*.json' 'node_modules/**'"
+    "build": "web-ext build --overwrite-dest --filename shyhurricane-$npm_package_version.xpi --ignore-files 'package*.json' 'node_modules/**' '__tests__/**' 'jest.setup.js'",
+    "test":  "jest --env=jsdom"
   },
   "devDependencies": {
-    "web-ext": "^8.9.0"
+    "web-ext": "^8.9.0",
+    "jest": "^30.0.0",
+    "jest-webextension-mock": "^3.3.0",
+    "jsdom": "^24.0.0",
+    "jest-environment-jsdom": "^30.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
   }
 }
