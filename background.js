@@ -3,14 +3,20 @@ let DOMAINS_IN_SCOPE = [];
 let MCP_SERVER_URL = "http://localhost:8000";
 const INDEX_PATH = "/index";
 
-// Load persisted settings  */
-browser.storage.local.get(["mcpServerUrl", "domainsInScope"]).then(items => {
+function _applyStorage(items) {
     if (items.mcpServerUrl) MCP_SERVER_URL = items.mcpServerUrl;
     if (items.domainsInScope) DOMAINS_IN_SCOPE = items.domainsInScope;
+}
+
+// Load persisted settings
+browser.storage.local.get(["mcpServerUrl", "domainsInScope"]).then(items => {
+    // In unit tests, use bg._setConfig(storageData) instead of relying on this async path
+    if (typeof process !== 'undefined' && process.env.JEST_WORKER_ID !== undefined) return;
+    _applyStorage(items);
     console.info(`storage loaded: MCP_SERVER_URL=${MCP_SERVER_URL}, DOMAINS_IN_SCOPE=${DOMAINS_IN_SCOPE}`);
 });
 
-/*  Listen for live updates (no reload needed)  */
+/*  Listen for live updates (no reload needed)   */
 browser.storage.local.onChanged.addListener(changes => {
     if (changes.mcpServerUrl)
         MCP_SERVER_URL = changes.mcpServerUrl.newValue || MCP_SERVER_URL;
@@ -35,11 +41,11 @@ const SKIP_TYPES = new Set([
 
 // Helper functions
 function urlInScope(url) {
-    if (url.toString().startsWith(MCP_SERVER_URL)) return false;
-    if (DOMAINS_IN_SCOPE.length === 0) return true;
     try {
-        const host = new URL(url).hostname;
-        return DOMAINS_IN_SCOPE.some(d => host.endsWith(d));
+        const parsed = new URL(url);
+        if (parsed.origin === new URL(MCP_SERVER_URL).origin) return false;
+        if (DOMAINS_IN_SCOPE.length === 0) return true;
+        return DOMAINS_IN_SCOPE.some(d => ('.' + parsed.hostname).endsWith(d));
     } catch {
         return false;
     }
@@ -64,7 +70,7 @@ function toKatanaHeaders(arr) {
 }
 
 // State stores
-const requests = {};   // requestId -> {method,url,body}
+const requests = {};     // requestId -> {method,url,body}
 const requestHeaders = {};   // requestId -> header array
 
 function cleanup(id) {
@@ -162,3 +168,20 @@ browser.webRequest.onHeadersReceived.addListener(
     filter,
     ["blocking", "responseHeaders"]
 );
+
+/*  Exports for unit testing (tree-shakeable: only present in Node.js)    */
+if (typeof module !== "undefined" && !module.imports) {
+    module.exports = {
+        urlInScope,
+        shouldSkip,
+        toKatanaHeaders,
+        cleanup,
+        getRequests() {
+            return requests;
+        },
+        getRequestHeaders() {
+            return requestHeaders;
+        },
+        _setConfig: _applyStorage,
+    };
+}

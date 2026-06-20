@@ -30,8 +30,10 @@ jobs:
       - name: Lint WebExtension
         run: npm run lint
 
+      - name: Run tests
+        run: npm test
+
       - name: Upload lint report (if any)
-        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: lint-report
